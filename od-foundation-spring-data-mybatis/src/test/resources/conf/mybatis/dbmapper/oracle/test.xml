@@ -7,7 +7,6 @@
 		select count(*) from user_tables where table_name = 'OD_FOUNDATION_DB_TEST'
 	</select>
 
-<<<<<<< HEAD
 	<insert id="test1" parameterType="cn.com.officedepot.model.Model">
 		insert into od_foundation_db_test (id, str) values (#{id}, #{str})
 	</insert>
