@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="od-foundation-spring-data-solr" default="clean" basedir=".">
+
+	<property name="solr.embedded.dir" value="${basedir}/src/main/solr/embedded" />
+	<target name="clean" description="清理">
+		<echo message="清理" />
+		
+		<delete file="${basedir}/target/solr-embedded.zip" failonerror="false" />
+		<delete includeEmptyDirs="true" failonerror="false">
+			<fileset dir="${solr.embedded.dir}/server/logs" includes="**/*" defaultexcludes="no"/>
+		</delete>
+	</target>
+
+	<target name="test" description="测试">
+		<echo message="测试" />
+		<!--
+		<exec dir="${solr.embedded.dir}/bin" executable="cmd" spawn="true">
+			<arg value="solr.cmd"/>
+			<arg value="-help"/>
+		</exec>
+		-->
+	</target>
+
+	<target name="package" description="打包">
+		<echo message="打包" />
+		<!--
+		<zip basedir="${solr.embedded.dir}" destfile="${basedir}/target/solr-embedded.zip" />
+		-->
+	</target>
+
+</project>

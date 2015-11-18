@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="100 seconds" debug="true">
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="${project.encoding}">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %p %logger{0} - %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="cn.com.officedepot" level="debug" />
+
+	<root level="warn">
+		<appender-ref ref="console" />
+	</root>
+
+</configuration>

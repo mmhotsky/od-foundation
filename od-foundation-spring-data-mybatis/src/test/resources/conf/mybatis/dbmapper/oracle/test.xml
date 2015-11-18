@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.dbmapper.test">
+
+	<select id="test0" resultType="Integer">
+		select count(*) from user_tables where table_name = 'OD_FOUNDATION_DB_TEST'
+	</select>
+
+<<<<<<< HEAD
+	<insert id="test1" parameterType="cn.com.officedepot.model.Model">
+		insert into od_foundation_db_test (id, str) values (#{id}, #{str})
+	</insert>
+
+	<update id="test2" parameterType="cn.com.officedepot.model.Model">
+		update od_foundation_db_test
+		<set>
+			<if test="str != null">
+				str = #{str}
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+
+	<delete id="test3" parameterType="cn.com.officedepot.model.Model">
+		delete od_foundation_db_test
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<select id="check" parameterType="cn.com.officedepot.model.Model" resultType="Integer">
+=======
+	<insert id="test1" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model">
+		insert into od_foundation_db_test (id, str) values (#{id}, #{str})
+	</insert>
+
+	<update id="test2" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model">
+		update od_foundation_db_test
+		<set>
+			<if test="str != null">
+				str = #{str}
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+
+	<delete id="test3" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model">
+		delete od_foundation_db_test
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<select id="check" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model" resultType="Integer">
+>>>>>>> branch 'master' of https://git.oschina.net/mmhotsky/od-foundation.git
+		select count(*) from od_foundation_db_test
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="str != null">
+				and str = #{str}
+			</if>
+		</where>
+	</select>
+
+</mapper>
