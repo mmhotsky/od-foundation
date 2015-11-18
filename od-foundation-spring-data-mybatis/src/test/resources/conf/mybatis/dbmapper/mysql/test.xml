@@ -3,7 +3,6 @@
 
 <mapper namespace="mybatis.dbmapper.test">
 
-<<<<<<< HEAD
 	<insert id="test1" parameterType="cn.com.officedepot.model.Model">
 		INSERT INTO od_foundation_db_test (id, str) VALUES (#{id}, #{str})
 	</insert>
@@ -51,55 +50,6 @@
 	</select>
 
 	<select id="test5" parameterType="cn.com.officedepot.model.Model" resultType="cn.com.officedepot.model.Model">
-=======
-	<insert id="test1" parameterType="cn.com.officedepot.foundation.spring.mybatis.Model">
-		INSERT INTO od_foundation_db_test (id, str) VALUES (#{id}, #{str})
-	</insert>
-
-	<insert id="insert-batch" parameterType="cn.com.officedepot.foundation.spring.mybatis.Model">
-		INSERT INTO od_foundation_db_test (id, str) VALUES 
-		<foreach collection="list" item="item" index="index" separator=",">
-		(#{item.id}, #{item.str})
-		</foreach>
-	</insert>
-
-	<update id="test2" parameterType="cn.com.officedepot.foundation.spring.mybatis.Model">
-		UPDATE od_foundation_db_test
-		<set>
-			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(str)">
-				str = #{str}
-			</if>
-		</set>
-		<where>
-			<if test="id != null">
-				id = #{id}
-			</if>
-		</where>
-	</update>
-
-	<delete id="test3" parameterType="cn.com.officedepot.foundation.spring.mybatis.Model">
-		DELETE FROM od_foundation_db_test
-		<where>
-			<if test="id != null">
-				id = #{id}
-			</if>
-		</where>
-	</delete>
-
-	<select id="check" parameterType="cn.com.officedepot.foundation.spring.mybatis.Model" resultType="Integer">
-		SELECT count(*) FROM od_foundation_db_test
-		<where>
-			<if test="id != null">
-				and id = #{id}
-			</if>
-			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(str)">
-				and str = #{str}
-			</if>
-		</where>
-	</select>
-
-	<select id="test5" parameterType="cn.com.officedepot.foundation.spring.mybatis.Model" resultType="cn.com.officedepot.foundation.spring.mybatis.Model">
->>>>>>> branch 'master' of https://git.oschina.net/mmhotsky/od-foundation.git
 		SELECT id, str FROM od_foundation_db_test
 		<where>
 			<if test="id != null">

@@ -16,14 +16,10 @@
 
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
-<<<<<<< HEAD
-		<constructor-arg index="1" value="BATCHFIXED" />
-=======
 		<constructor-arg index="1" value="BATCH" />
->>>>>>> branch 'master' of https://git.oschina.net/mmhotsky/od-foundation.git
 	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="dataSource" p:configLocation="classpath:/conf/mybatis/mybatis-config.xml"
-			p:mapperLocations="classpath*:/conf/mybatis/dbmapper/${dialect}/*.xml" />
+		p:mapperLocations="classpath*:/conf/mybatis/dbmapper/${dialect}/*.xml" />
 
 </beans>

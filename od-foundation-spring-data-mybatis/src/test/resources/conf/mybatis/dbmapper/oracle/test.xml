@@ -36,36 +36,6 @@
 	</delete>
 
 	<select id="check" parameterType="cn.com.officedepot.model.Model" resultType="Integer">
-=======
-	<insert id="test1" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model">
-		insert into od_foundation_db_test (id, str) values (#{id}, #{str})
-	</insert>
-
-	<update id="test2" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model">
-		update od_foundation_db_test
-		<set>
-			<if test="str != null">
-				str = #{str}
-			</if>
-		</set>
-		<where>
-			<if test="id != null">
-				id = #{id}
-			</if>
-		</where>
-	</update>
-
-	<delete id="test3" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model">
-		delete od_foundation_db_test
-		<where>
-			<if test="id != null">
-				id = #{id}
-			</if>
-		</where>
-	</delete>
-
-	<select id="check" parameterType="cn.com.officedepot.foundation.spring.mybatis.SpringMybatisTest$Model" resultType="Integer">
->>>>>>> branch 'master' of https://git.oschina.net/mmhotsky/od-foundation.git
 		select count(*) from od_foundation_db_test
 		<where>
 			<if test="id != null">
