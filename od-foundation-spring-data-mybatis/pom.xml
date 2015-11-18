@@ -38,8 +38,7 @@
 		<!-- Mybatis start -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
-<<<<<<< HEAD
-			<artifactId>mybatis-fixed</artifactId>
+			<artifactId>mybatis</artifactId>
 			<version>3.2.5</version>
 		</dependency>
 		<dependency>
@@ -50,21 +49,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring-fixed</artifactId>
-=======
-			<artifactId>mybatis</artifactId>
-			<version>3.2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
->>>>>>> branch 'master' of https://git.oschina.net/mmhotsky/od-foundation.git
 			<version>1.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper</artifactId>
-			<version>4.0.2</version>
 		</dependency>
 		<!-- Mybatis end -->
 
