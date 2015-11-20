@@ -5,12 +5,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.ibatis.executor.BatchResult;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -59,7 +58,7 @@ public class SpringMybatisInsertTest {
 	}
 
 	/**
-	 * 测试mybatis单行插入
+	 * 测试mybatis单行插入（非自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
@@ -75,7 +74,7 @@ public class SpringMybatisInsertTest {
 	}
 
 	/**
-	 * 测试mybatis批量插入
+	 * 测试mybatis批量插入（非自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
@@ -96,7 +95,7 @@ public class SpringMybatisInsertTest {
 	}
 
 	/**
-	 * 测试mybatis单行插入时返回主键
+	 * 测试mybatis单行插入时返回主键（自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
@@ -105,50 +104,45 @@ public class SpringMybatisInsertTest {
 		Model paras = new Model(null, "str");
 		sqlTemplate.insert(DEFAULT_NAMESPACE + "test3", paras); // insert方法不再返回主键，只返回影响的行数
 		sqlTemplate.flushStatements();
-		int pk = paras.getId();
+		Integer pk = paras.getId();
 
 		// 校验
-		Integer obj = sqlTemplate.selectOne(DEFAULT_NAMESPACE + "check", paras);
+		Integer obj = sqlTemplate.selectOne(DEFAULT_NAMESPACE + "check-increment", paras);
 		Assert.assertNotNull(obj);
 		Assert.assertEquals(Integer.valueOf(1), obj);
-		Assert.assertEquals(Integer.valueOf(1), Integer.valueOf(pk));
+		Assert.assertNotNull(pk);
+		Assert.assertTrue(pk > 0);
 	}
 
 	/**
-	 * 测试mybatis批量插入时返回主键
+	 * 测试mybatis批量插入时返回主键（自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
-	@Ignore
 	public void test4() {
 		final int ROW_COUNT = 3;
 
 		// 插入
-		Integer[] pks = new Integer[ROW_COUNT];
 		List<Model> paras = new ArrayList<Model>();
 		for (int i = 1; i <= ROW_COUNT; i++) {
-			pks[i - 1] = i;
-			paras.add(new Model(i, "str" + i));
+			paras.add(new Model(null, "str" + i));
 		}
 		sqlTemplate.insert(DEFAULT_NAMESPACE + "test4", paras);
 		sqlTemplate.flushStatements();
 
-		Integer[] pksValid = new Integer[ROW_COUNT];
-		for (Model para : paras) {
-			pksValid = ArrayUtils.add(pksValid, para.getId());
-		}
-
 		// 校验
-		Integer obj = sqlTemplate.selectOne(DEFAULT_NAMESPACE + "check", null);
+		Integer obj = sqlTemplate.selectOne(DEFAULT_NAMESPACE + "check-increment", null);
 		Assert.assertNotNull(obj);
 		Assert.assertEquals(Integer.valueOf(ROW_COUNT), obj);
 		for (int i = 0; i < ROW_COUNT; i++) {
-			Assert.assertEquals(pks[i], pksValid[i]);
+			Integer pk = paras.get(i).getId();
+			Assert.assertNotNull(pk);
+			Assert.assertTrue(pk > 0);
 		}
 	}
 
 	/**
-	 * 测试mybatis单行插入时返回实体对象
+	 * 测试mybatis单行插入时使用Sequence生成主键（非自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
@@ -157,16 +151,34 @@ public class SpringMybatisInsertTest {
 	}
 
 	/**
-	 * 测试mybatis批量插入时返回实体对象集合
+	 * 测试mybatis单行插入时返回受影响的行数（非自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
 	public void test6() {
+		// 插入
+		Model paras = new Model(1, "str");
+		sqlTemplate.insert(DEFAULT_NAMESPACE + "test1", paras);
+		List<BatchResult> affected = sqlTemplate.flushStatements();
 
+		// 校验
+		Integer obj = sqlTemplate.selectOne(DEFAULT_NAMESPACE + "check", paras);
+		Assert.assertNotNull(obj);
+		Assert.assertEquals(Integer.valueOf(1), obj);
+
+		int execCounts = affected.size();
+		int affectedRows = 0;
+		for (BatchResult r : affected) {
+			for (int a : r.getUpdateCounts()) {
+				affectedRows += a;
+			}
+		}
+		Assert.assertEquals(1, execCounts);
+		Assert.assertEquals(1, affectedRows);
 	}
 
 	/**
-	 * 测试mybatis单行插入时使用自增列生成主键
+	 * 测试mybatis批量插入时返回受影响的行数（非自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
@@ -175,7 +187,7 @@ public class SpringMybatisInsertTest {
 	}
 
 	/**
-	 * 测试mybatis单行插入时使用Sequence生成主键
+	 * 测试mybatis单行插入时使用组合主键（非自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
@@ -184,38 +196,11 @@ public class SpringMybatisInsertTest {
 	}
 
 	/**
-	 * 测试mybatis单行插入时使用UUID生成主键
+	 * 测试mybatis批量插入时使用组合主键（非自增主键）
 	 */
 	@Test
 	@Transactional(readOnly = false)
 	public void test9() {
-
-	}
-
-	/**
-	 * 测试mybatis单行插入时使用自定义方式生成主键
-	 */
-	@Test
-	@Transactional(readOnly = false)
-	public void test10() {
-
-	}
-
-	/**
-	 * 测试mybatis批量插入时返回受影响的行数
-	 */
-	@Test
-	@Transactional(readOnly = false)
-	public void test11() {
-
-	}
-
-	/**
-	 * 测试mybatis单选插入时执行插入或更新操作
-	 */
-	@Test
-	@Transactional(readOnly = false)
-	public void test12() {
 
 	}
 

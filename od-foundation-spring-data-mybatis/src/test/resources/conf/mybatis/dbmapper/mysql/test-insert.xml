@@ -3,6 +3,18 @@
 
 <mapper namespace="mybatis.dbmapper.test.insert">
 
+	<select id="check" parameterType="cn.com.officedepot.model.Model" resultType="Integer" statementType="PREPARED" flushCache="false" resultSetType="FORWARD_ONLY">
+		SELECT count(*) FROM od_foundation_db_test
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(str)">
+				and str = #{str}
+			</if>
+		</where>
+	</select>
+
 	<insert id="test1" parameterType="cn.com.officedepot.model.Model" statementType="PREPARED" flushCache="true">
 		<!--
 			sql: INSERT INTO tablename set column=value, column=value;
@@ -22,6 +34,7 @@
 	<insert id="test2" parameterType="cn.com.officedepot.model.Model" statementType="PREPARED" flushCache="true">
 		<!--
 			sql: INSERT INTO tablename (column, column) values (value, value), (value, value);
+			这种批量插入方式有弊端，受到sql文本长度的限制，可以在代码中使用关闭自动提交，然后每N条提交1次的方式代替
 			foreach迭代的集合, 如果为List那么collection设为list, 如果为Array那么collection设为array
 			item为当前迭代的对象
 			index从0开始计数
@@ -43,7 +56,7 @@
 			代码层面, 由于sqlTemplate.insert不再返回主键值, 所以必须通过实体类的get方法获取主键值
 			sqlTemplate.insert之后必须提交事务, 否则也获取不到主键值
 		-->
-		INSERT INTO od_foundation_db_test
+		INSERT INTO od_foundation_db_test_increment
 		<set>
 			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(str)">
 				str = #{str},
@@ -54,24 +67,27 @@
 	<insert id="test4" parameterType="cn.com.officedepot.model.Model" statementType="PREPARED" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		<!--
 			sql: INSERT INTO tablename (column, column) values (value, value), (value, value);
-			
 		-->
-		INSERT INTO od_foundation_db_test (id, str) VALUES
+		INSERT INTO od_foundation_db_test_increment (id, str) VALUES
 		<foreach collection="list" item="o" index="idx" separator=",">
 			(#{o.id}, #{o.str})
 		</foreach>
 	</insert>
 
-	<select id="check" parameterType="cn.com.officedepot.model.Model" resultType="Integer" statementType="PREPARED" flushCache="false" resultSetType="FORWARD_ONLY">
-		SELECT count(*) FROM od_foundation_db_test
-		<where>
+	<insert id="test5" parameterType="cn.com.officedepot.model.Model" statementType="PREPARED" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		<!--
+			sql: INSERT INTO tablename set column=value, column=value;
+			set标签会处理多余的逗号
+		-->
+		INSERT INTO od_foundation_db_test
+		<set>
 			<if test="id != null">
-				and id = #{id}
+				id = #{id},
 			</if>
 			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(str)">
-				and str = #{str}
+				str = #{str},
 			</if>
-		</where>
-	</select>
+		</set>
+	</insert>
 
 </mapper>

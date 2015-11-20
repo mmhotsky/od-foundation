@@ -38,7 +38,7 @@
 		<!-- Mybatis start -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
+			<artifactId>mybatis-fixed</artifactId>
 			<version>3.2.5</version>
 		</dependency>
 		<dependency>
