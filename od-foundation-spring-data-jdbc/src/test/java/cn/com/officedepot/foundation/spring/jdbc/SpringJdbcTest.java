@@ -14,7 +14,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -49,7 +48,6 @@ import cn.com.officedepot.model.Model;
 @Rollback(value = true)
 @Transactional(transactionManager = "transactionManager", isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@Ignore
 public class SpringJdbcTest {
 
 	@Resource(name = "jdbcTemplate")
