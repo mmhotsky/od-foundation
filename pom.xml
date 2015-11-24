@@ -45,7 +45,7 @@
 	<modules>
 		<module>od-foundation-spring</module>
 		<module>od-foundation-spring-dubbo</module>
-		<module>od-foundation-spring-data-mybatis</module>
+		<module>od-foundation-spring-data-jdbc</module>
 		<module>od-foundation-spring-data-redis</module>
 		<module>od-foundation-spring-data-solr</module>
 	</modules>
