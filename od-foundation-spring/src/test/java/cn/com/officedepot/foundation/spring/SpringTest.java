@@ -27,6 +27,8 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.util.StringUtils;
 
+import cn.com.officedepot.foundation.spring.context.support.MessageSourceUtils;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ ServletTestExecutionListener.class, DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
 @ContextConfiguration(locations = { "classpath*:/conf/beans.xml" })
@@ -85,11 +87,11 @@ public class SpringTest implements ApplicationContextAware, EnvironmentAware, Me
 		Assert.assertNotNull(message);
 
 		for (Map.Entry<String, String> e : System.getenv().entrySet()) {
-			logger.debug("[{}] {}: {}", message.getMessage("EnvionmentVariables", null, Locale.getDefault()), e.getKey(), e.getValue());
+			logger.debug("[{}] {}: {}", message.getMessage(MessageSourceUtils.resolveEnvionmentVariablesMessageKey(), null, Locale.getDefault()), e.getKey(), e.getValue());
 		}
 
 		for (Map.Entry<Object, Object> e : System.getProperties().entrySet()) {
-			logger.debug("[{}] {}: {}", message.getMessage("SystemProperties", null, Locale.getDefault()), e.getKey(), e.getValue());
+			logger.debug("[{}] {}: {}", message.getMessage(MessageSourceUtils.resolveSystemPropertiesMessageKey(), null, Locale.getDefault()), e.getKey(), e.getValue());
 		}
 
 		String[] beanNames = StringUtils.sortStringArray(this.applicationContext.getBeanDefinitionNames());

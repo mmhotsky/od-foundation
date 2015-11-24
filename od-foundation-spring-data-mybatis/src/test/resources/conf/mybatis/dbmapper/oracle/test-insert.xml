@@ -20,20 +20,18 @@
 			sql: INSERT INTO tablename set column=value;
 			useGeneratedKeys表示使用JDBC的getGeneratedKeys方法来取出由数据库内部生成的主键
 			keyProperty对应的实体类属性，必须有getter, setter
-			set标签会处理多余的逗号
+			selectKey
 
 			代码层面, 由于sqlTemplate.insert不再返回主键值, 所以必须通过实体类的get方法获取主键值
 			sqlTemplate.insert之后必须提交事务, 否则也获取不到主键值
 		-->
-		INSERT INTO od_foundation_db_test
-		<set>
-			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(str)">
-				str = #{str},
-			</if>
-		</set>
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			SELECT sq_foundation_db_test.nextval FROM dual
+		</selectKey>
+		INSERT INTO od_foundation_db_test (id, str) VALUES (#{id}, #{str})
 	</insert>
 
-	<insert id="test2" parameterType="Model" statementType="PREPARED" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	<insert id="test2" parameterType="Model" statementType="PREPARED" flushCache="true" useGeneratedKeys="false" keyProperty="id" keyColumn="id">
 		<!--
 			sql: INSERT INTO tablename (column, column) values (value, value), (value, value);
 			这种批量插入方式有弊端，会受到sql文本长度的限制，可以在代码中使用关闭自动提交，然后每N条提交1次的方式代替
@@ -44,27 +42,18 @@
 			separator为多个迭代对象之间的分隔符
 			open为前缀, 迭代完成后加入迭代内容的开始位置
 			close为后缀, 迭代完成后加入迭代内容的结束位置
-		-->
-		INSERT INTO od_foundation_db_test (id, str) VALUES
-		<foreach collection="list" item="o" index="idx" separator=",">
-			(#{o.id}, #{o.str})
-		</foreach>
-	</insert>
 
-	<insert id="test5" parameterType="Model" statementType="PREPARED" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		<!--
-			sql: INSERT INTO tablename set column=value, column=value;
-			set标签会处理多余的逗号
+		INSERT INTO od_foundation_db_test (id, str) select sq_foundation_db_test.nextval id, tmp__.str str from (
+			<foreach collection="list" item="o" index="idx" separator="UNION ALL">
+				SELECT #{o.str} str from dual
+			</foreach>
+		) tmp__
 		-->
-		INSERT INTO od_foundation_db_test
-		<set>
-			<if test="id != null">
-				id = #{id},
-			</if>
-			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(str)">
-				str = #{str},
-			</if>
-		</set>
+		INSERT ALL
+		<foreach collection="list" item="o" index="idx" separator=" ">
+			INTO od_foundation_db_test (id, str) VALUES (sq_foundation_db_test.nextval, #{o.str})
+		</foreach>
+		SELECT * FROM dual
 	</insert>
 
 </mapper>

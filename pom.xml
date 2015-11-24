@@ -670,6 +670,7 @@
 					<useSystemClassLoader>false</useSystemClassLoader>
 					<systemPropertyVariables>
 						<spring.profiles.active>${profile.active}</spring.profiles.active>
+						<dialect>${dialect}</dialect>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

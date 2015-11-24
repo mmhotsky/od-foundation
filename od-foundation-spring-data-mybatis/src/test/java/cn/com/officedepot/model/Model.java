@@ -2,6 +2,9 @@ package cn.com.officedepot.model;
 
 import java.io.Serializable;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("Model")
 public class Model implements Serializable {
 
 	private static final long serialVersionUID = 1L;

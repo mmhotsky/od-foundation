@@ -20,6 +20,6 @@
 	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" p:dataSource-ref="dataSource" p:configLocation="classpath:/conf/mybatis/mybatis-config.xml"
-		p:mapperLocations="classpath*:/conf/mybatis/dbmapper/${dialect}/*.xml" />
+		p:mapperLocations="classpath*:/conf/mybatis/dbmapper/${dialect}/*.xml" p:typeAliasesPackage="cn.com.officedepot.model" />
 
 </beans>

@@ -20,6 +20,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
 
+import cn.com.officedepot.foundation.spring.context.support.MessageSourceUtils;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ ServletTestExecutionListener.class, DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
 @ContextConfiguration(locations = { "classpath*:/conf/beans.xml" })
@@ -48,10 +50,10 @@ public class SpringMessageSourceTest implements MessageSourceAware {
 	@Test
 	public void test0() {
 		if (Locale.SIMPLIFIED_CHINESE.equals(Locale.getDefault())) {
-			Assert.assertEquals("测试", message.getMessage("testMessage", null, Locale.getDefault()));
+			Assert.assertEquals("测试", message.getMessage(MessageSourceUtils.resolveClassMessageKeyPrefix(this.getClass()) + "test", null, Locale.getDefault()));
 
 		} else if (Locale.US.equals(Locale.getDefault())) {
-			Assert.assertEquals("test", message.getMessage("testMessage", null, Locale.getDefault()));
+			Assert.assertEquals("test", message.getMessage(MessageSourceUtils.resolveClassMessageKeyPrefix(this.getClass()) + "test", null, Locale.getDefault()));
 
 		} else {
 			Assert.fail();
@@ -61,10 +63,10 @@ public class SpringMessageSourceTest implements MessageSourceAware {
 	@Test
 	public void test1() {
 		if (Locale.SIMPLIFIED_CHINESE.equals(Locale.getDefault())) {
-			Assert.assertEquals("环境变量", message.getMessage("EnvionmentVariables", null, Locale.getDefault()));
+			Assert.assertEquals("环境变量", message.getMessage(MessageSourceUtils.resolveEnvionmentVariablesMessageKey(), null, Locale.getDefault()));
 
 		} else if (Locale.US.equals(Locale.getDefault())) {
-			Assert.assertEquals("Envionment Variables", message.getMessage("EnvionmentVariables", null, Locale.getDefault()));
+			Assert.assertEquals("Envionment Variables", message.getMessage(MessageSourceUtils.resolveEnvionmentVariablesMessageKey(), null, Locale.getDefault()));
 
 		} else {
 			Assert.fail();

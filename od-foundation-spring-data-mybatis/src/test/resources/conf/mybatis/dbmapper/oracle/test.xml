@@ -7,11 +7,11 @@
 		select count(*) from user_tables where table_name = 'OD_FOUNDATION_DB_TEST'
 	</select>
 
-	<insert id="test1" parameterType="cn.com.officedepot.model.Model">
+	<insert id="test1" parameterType="Model">
 		insert into od_foundation_db_test (id, str) values (#{id}, #{str})
 	</insert>
 
-	<update id="test2" parameterType="cn.com.officedepot.model.Model">
+	<update id="test2" parameterType="Model">
 		update od_foundation_db_test
 		<set>
 			<if test="str != null">
@@ -25,7 +25,7 @@
 		</where>
 	</update>
 
-	<delete id="test3" parameterType="cn.com.officedepot.model.Model">
+	<delete id="test3" parameterType="Model">
 		delete od_foundation_db_test
 		<where>
 			<if test="id != null">
@@ -34,7 +34,7 @@
 		</where>
 	</delete>
 
-	<select id="check" parameterType="cn.com.officedepot.model.Model" resultType="Integer">
+	<select id="check" parameterType="Model" resultType="Integer">
 		select count(*) from od_foundation_db_test
 		<where>
 			<if test="id != null">
