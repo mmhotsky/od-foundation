@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	sqlgroup: 	指定一个sql组, namespace为sql组的全名空间, 防止sql的id重复
+	import: 	导入指定的Java包, 方便直接引用包内的类和函数, 不支持逗号分隔和带通配符的写法, 一次只能导入一个包
+	sql:      	指定一个sql语句, 
+				id为namespace内的唯一标识且不能重复,
+				parameterType为传入参数的类型(javabean类型为bean, list类型为list, map类型为map, 基本类型为基本类型名称, 如int为int等),
+				useCache为是否启用sql语句的缓存, 缓存过期后会重新从文件中读取sql语句
+	if: 		判断test属性指定的条件是否成立
+	choose: 	条件选择语句, 与when标签配合使用
+	when: 		判断test属性指定的条件是否成立, 是choose标签的子标签, 不能以if标签代替
+	otherwise: 	when标签指定的条件都不成立时, 默认使用otherwise标签的内容
+	where:		设置sql语句的where关键字, 并自动trim掉第1个条件前的and or等关键字
+	set:		设置insert语句的set关键字
+	foreach:	按参数循环设置sql语句,
+				item为当前循环的对象,
+				index为当前循环的索引数(以0开始计数),
+				collection为循环的集合(循环list对象为list, map对象为map, array对象为array),
+				separator为各个循环体之间的连接符,
+				open为循环体最外层的前缀,
+				close为循环体最外层的后缀
+-->
+
+<sqlgroup namespace="conf.jdbc.sql.mysql.test">
+
+	<import package="org.apache.commons.lang3" />
+
+	<sql id="sql1" parameterType="int" useCache="true">
+		select * from table_name
+		<where>
+			<if test="name != null">
+				and name = ${para_name}
+			</if>
+			<choose>
+				<when test="age &gt;= 18">
+					and type=2
+				</when>
+				<when test="age &lt; 18">
+					and type=1
+				</when>
+				<otherwise>
+					and type in (1, 2)
+				</otherwise>
+			</choose>
+		</where>
+	</sql>
+
+	<sql id="sql2" parameterType="double" useCache="true">
+		insert into table_name values
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			${item.name}, ${item.value}
+		</foreach>
+	</sql>
+
+</sqlgroup>
