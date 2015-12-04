@@ -8,19 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.CollectionUtils;
 
 import cn.com.officedepot.foundation.spring.jdbc.sql.analyzer.node.SqlGroup;
 import cn.com.officedepot.foundation.spring.jdbc.sql.analyzer.node.SqlNode;
 
-public class DefaultXmlSqlAnalyzer implements SqlAnalyzer, InitializingBean {
-
-	private static final Map<String, SqlNode> cache = new ConcurrentSqlCache<String, SqlNode>();
-
-	private PathMatchingResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
+public class DefaultXmlSqlAnalyzer extends AbstractSqlAnalyzer {
 
 	private String basePackages = null;
 
@@ -73,11 +67,6 @@ public class DefaultXmlSqlAnalyzer implements SqlAnalyzer, InitializingBean {
 	}
 
 	protected SqlGroup resolveSqlGroup(File sqlFile) {
-		return null;
-	}
-
-	@Override
-	public <T> String get(String namespace, String sqlId, T parameter) {
 		return null;
 	}
 

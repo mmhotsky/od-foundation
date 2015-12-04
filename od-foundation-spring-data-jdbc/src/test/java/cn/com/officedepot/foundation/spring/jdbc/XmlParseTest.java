@@ -1,13 +1,10 @@
 package cn.com.officedepot.foundation.spring.jdbc;
 
-import java.io.File;
-import java.util.Iterator;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.annotation.Resource;
 
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +12,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,6 +36,9 @@ import cn.com.officedepot.foundation.spring.jdbc.sql.analyzer.SqlAnalyzer;
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class XmlParseTest {
 
+	@Resource(name = "jdbcTemplate")
+	protected JdbcTemplate jdbcTemplate = null;
+
 	@Resource(name = "sqlAnalyzer")
 	protected SqlAnalyzer sqlAnalyzer = null;
 
@@ -52,15 +54,15 @@ public class XmlParseTest {
 
 	@Test
 	public void test1() throws Exception {
-		SAXReader sax = new SAXReader();
-		for (File file : sqlAnalyzer.getPackages()) {
-			Document xmlDoc = sax.read(file);
-			Element root = xmlDoc.getRootElement(); // 根节点
-			Iterator<?> it = root.elementIterator("sql");
-			while (it.hasNext()) {
-				Element sqlElement = (Element) it.next();
+		Integer paras = 1;
+		jdbcTemplate.query(sqlAnalyzer.get("", "", paras), new RowMapper<Integer>() {
+
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return null;
 			}
-		}
+
+		}, paras);
 	}
 
 }

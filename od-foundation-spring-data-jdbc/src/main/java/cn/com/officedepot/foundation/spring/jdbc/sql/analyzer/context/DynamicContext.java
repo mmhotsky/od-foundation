@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DynamicContext {
 
+	private static final String SPACE = " ";
 	private final StringBuilder sqlBuilder = new StringBuilder();
 	private Object parameterObject = null;
 
@@ -16,8 +17,7 @@ public class DynamicContext {
 	}
 
 	public void appendSql(String sql) {
-		sqlBuilder.append(sql);
-		sqlBuilder.append(" ");
+		sqlBuilder.append(sql).append(SPACE);
 	}
 
 	public String getSql() {
